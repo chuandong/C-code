@@ -1,0 +1,73 @@
+#include "dong.h"
+
+char *resv_str(char *str)
+{
+	char *p = NULL;
+	int i = 0, j = 0, len = 0;
+	int poit_len = 0, pot = 0;
+	char *left_str = NULL;
+	char *righ_str = NULL;
+	char des[20]={0};
+	len = strlen(str);
+	
+	p = des;  /*使用des变量的值,指针和数组赋值可以直接使用等号*/
+	for (; i < strlen(str); i++)
+	{
+		if (',' == str[i])  /*判断读出的字符串里面有没有逗号*/
+			poit_len = i;   /*记录逗号的位置*/
+			pot = poit_len; /*pot作为操作逗号后面的字符串长度使用*/
+	}
+	
+	if (poit_len < strlen(str) && poit_len !=0) /*说明有逗号*/
+	{
+		left_str = malloc(20); /*指针变量使用前需要申请空间，不然报段错误*/
+		righ_str = malloc(20);
+		len = poit_len-1; /*操作逗号前面的字符串*/
+		
+		for (; j < poit_len; j++)
+		{
+			
+			left_str[j] = str[len--];
+			printf("%d:[%s]\n", j,left_str);
+		}
+		printf("left:[%s]\n", left_str);
+		printf("str:[%s]\n", str);
+		len = strlen(str); /*重新给len赋值*/
+		printf("pot:[%d]len:[%d]\n", pot, len);
+		i = 0; /*重新使用i变量*/
+		righ_str[i] = str[pot]; /*指针变量使用需要从0号位置开始*/
+		righ_str[i+1] = str[pot+1]; /*逗号后面还有空格,原地保持不变*/
+		printf("righ:[%s]\n", righ_str);
+		i = i+1; /*操作空格后面的字符串*/
+		for (j = pot+2; j < strlen(str); j++)
+		{
+			++i; /*从逗号2号位置开始操作*/
+			--len;
+			righ_str[i] = str[len];
+			printf("%d:righ:[%s]\n", j,righ_str);
+		}
+		printf("righ:[%s]\n", righ_str);
+		
+		strcat(des, left_str); /*拼接字符串*/
+		
+		strcat(des, righ_str);
+		return p;
+	}
+	
+	free(left_str); /*释放申请的空间*/
+	free(righ_str);
+	
+	return ;
+}
+
+
+int main(int argc, char *argv[])
+{
+	char name[20] = "hello, world";
+	char *des = NULL;
+	char *q = NULL;
+	q = resv_str(name);
+	printf("des:[%s]\n", q);/*输出的变量为:olleh, dlrow*/
+	
+	return 0;
+}
